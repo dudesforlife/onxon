@@ -1,0 +1,237 @@
+<!doctype html> <!-- Gunakan standard HTML5. -->
+<html lang="en"> <!-- Tetapkan bahasa utama halaman kepada English. -->
+<head> <!-- Mula bahagian metadata dan gaya halaman. -->
+<meta charset="utf-8"> <!-- Benarkan aksara khas dan emoji dipaparkan dengan betul. -->
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"> <!-- Pastikan ilustrasi responsif pada telefon. -->
+<meta name="theme-color" content="#0b1218"> <!-- Warnakan bar pelayar supaya sepadan dengan bilik snooker. -->
+<title>ONXON - The Perfect Shot</title> <!-- Tajuk yang dipaparkan pada tab pelayar. -->
+<style> /* Mula semua gaya dalaman supaya fail kekal satu HTML. */
+:root{--night:#0b1218;--wall:#14242a;--wall2:#0f1d22;--cream:#f4e7c7;--gold:#d7a94b;--wood:#6f3c22;--wood2:#3c2117;--cloth:#087b55;--cloth-dark:#05573e;--ink:#eef7f4} /* Simpan palet warna utama ilustrasi. */
+*{box-sizing:border-box} /* Pastikan padding tidak menambah saiz elemen. */
+html,body{margin:0;min-height:100%;background:var(--night)} /* Buang margin dan penuhkan latar halaman. */
+body{min-height:100vh;display:grid;place-items:center;padding:clamp(12px,3vw,34px);overflow-x:hidden;color:var(--ink);font-family:"Segoe UI",Arial,sans-serif;background:radial-gradient(circle at 50% 8%,#27404a 0,#14242a 28%,#0b1218 74%)} /* Pusatkan poster dalam bilik snooker gelap. */
+.poster{width:min(1180px,100%);border:1px solid #ffffff1f;border-radius:clamp(18px,3vw,34px);overflow:hidden;position:relative;background:#111f24;box-shadow:0 38px 90px #000b,0 0 0 8px #ffffff08} /* Bina bingkai poster utama. */
+.poster::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(115deg,#ffffff0d,transparent 25%,transparent 70%,#d7a94b0d)} /* Tambah pantulan cahaya halus di atas poster. */
+.scene{display:block;width:100%;height:auto;aspect-ratio:12/7.6;background:#102027} /* Jadikan SVG mengikut lebar skrin. */
+.caption{position:absolute;left:clamp(16px,4vw,50px);top:clamp(16px,4vw,42px);z-index:3;pointer-events:none} /* Letakkan tajuk di penjuru kiri atas. */
+.kicker{margin:0 0 5px;font-size:clamp(9px,1.2vw,13px);font-weight:800;letter-spacing:.28em;color:#d7a94b} /* Gaya label kecil emas. */
+h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(30px,6vw,72px);font-weight:500;line-height:.92;letter-spacing:-.045em;color:#f4e7c7;text-shadow:0 5px 28px #000} /* Gaya tajuk besar klasik. */
+.caption span{display:block;margin-top:9px;font-size:clamp(10px,1.4vw,15px);letter-spacing:.16em;color:#b9cbc9} /* Gaya slogan di bawah tajuk. */
+.shot-note{position:absolute;right:clamp(14px,3vw,34px);bottom:clamp(12px,2.6vw,30px);z-index:3;display:flex;align-items:center;gap:9px;padding:8px 13px;border:1px solid #ffffff1f;border-radius:999px;background:#081014aa;color:#dbe9e5;font-size:clamp(9px,1.1vw,12px);font-weight:700;letter-spacing:.08em;backdrop-filter:blur(5px)} /* Paparkan nota animasi di bawah kanan. */
+.shot-note i{width:7px;height:7px;border-radius:50%;background:#e4b84f;box-shadow:0 0 12px #e4b84f;animation:signal 6s ease-in-out infinite} /* Jadikan lampu status berkelip semasa pukulan. */
+.lamp-glow{animation:lampPulse 6s ease-in-out infinite} /* Hidupkan denyutan cahaya lampu. */
+.cue-rig{transform-box:fill-box;transform-origin:58% 50%;animation:cueShot 6s ease-in-out infinite} /* Gerakkan kayu snooker ke belakang dan ke depan. */
+.shooting-arm{transform-box:fill-box;transform-origin:15% 55%;animation:armShot 6s ease-in-out infinite} /* Gerakkan lengan pemain bersama kayu. */
+.cue-ball{transform-box:fill-box;transform-origin:center;animation:cueBallRoll 6s cubic-bezier(.25,.72,.25,1) infinite} /* Gerakkan bola putih selepas dipukul. */
+.target-ball{transform-box:fill-box;transform-origin:center;animation:targetBallRoll 6s cubic-bezier(.2,.72,.23,1) infinite} /* Gerakkan bola merah ke lubang selepas pelanggaran. */
+.target-shadow{transform-box:fill-box;transform-origin:center;animation:targetShadow 6s cubic-bezier(.2,.72,.23,1) infinite} /* Gerakkan bayang bola merah bersama bola. */
+.cue-shadow{transform-box:fill-box;transform-origin:center;animation:cueShadow 6s cubic-bezier(.25,.72,.25,1) infinite} /* Gerakkan bayang bola putih bersama bola. */
+.observer-head{transform-box:fill-box;transform-origin:50% 90%;animation:watchShot 6s ease-in-out infinite} /* Condongkan kepala pemerhati ketika bola bergerak. */
+.observer-hand{transform-box:fill-box;transform-origin:25% 10%;animation:handReact 6s ease-in-out infinite} /* Gerakkan tangan pemerhati sebagai reaksi kecil. */
+.pocket-flash{animation:pocketFlash 6s ease-out infinite} /* Beri kilauan ketika bola masuk lubang. */
+.speech-bubble{animation:speechAppear 6s ease-in-out infinite;transform-box:fill-box;transform-origin:88% 100%} /* Paparkan gelembung dialog selepas bola merah masuk lubang. */
+@keyframes cueShot{0%,10%,100%{transform:translate(0,0)}18%{transform:translate(-25px,8px)}24%{transform:translate(19px,-6px)}29%,92%{transform:translate(0,0)}} /* Urutan kayu ditarik dan ditolak. */
+@keyframes armShot{0%,10%,100%{transform:rotate(0deg)}18%{transform:rotate(4deg)}24%{transform:rotate(-3deg)}29%,92%{transform:rotate(0deg)}} /* Urutan lengan memukul bola. */
+@keyframes cueBallRoll{0%,24%{transform:translate(0,0) rotate(0)}45%,100%{transform:translate(190px,-52px) rotate(540deg)}} /* Bola putih bergerak hingga bertemu bola merah. */
+@keyframes cueShadow{0%,24%{transform:translate(0,0);opacity:.34}45%,100%{transform:translate(190px,-52px);opacity:.25}} /* Bayang bola putih mengikut gerakan. */
+@keyframes targetBallRoll{0%,44%{transform:translate(0,0) scale(1);opacity:1}72%{transform:translate(165px,-78px) scale(1);opacity:1}78%,100%{transform:translate(171px,-83px) scale(.45);opacity:0}} /* Bola merah bergerak dan jatuh ke lubang. */
+@keyframes targetShadow{0%,44%{transform:translate(0,0) scale(1);opacity:.34}72%{transform:translate(165px,-78px) scale(1);opacity:.25}78%,100%{transform:translate(171px,-83px) scale(.45);opacity:0}} /* Bayang bola merah hilang di lubang. */
+@keyframes watchShot{0%,40%,100%{transform:rotate(0deg)}56%,78%{transform:rotate(-5deg)}} /* Kepala pemerhati mengekori bola. */
+@keyframes handReact{0%,52%,100%{transform:rotate(0deg)}65%,82%{transform:rotate(-12deg)}} /* Tangan pemerhati memberi reaksi. */
+@keyframes pocketFlash{0%,68%,100%{opacity:0;transform:scale(.4)}73%{opacity:.9;transform:scale(1.5)}79%{opacity:0;transform:scale(2.2)}} /* Kilauan pendek saat bola masuk. */
+@keyframes speechAppear{0%,72%{opacity:0;transform:translateY(12px) scale(.72)}78%,92%{opacity:1;transform:translateY(0) scale(1)}98%,100%{opacity:0;transform:translateY(-5px) scale(.94)}} /* Dialog muncul selepas bola masuk, kekal seketika dan hilang sebelum pukulan berulang. */
+@keyframes lampPulse{0%,100%{opacity:.72}25%{opacity:.88}72%{opacity:1}} /* Cahaya lampu bernafas perlahan. */
+@keyframes signal{0%,20%,90%,100%{opacity:.35}24%,78%{opacity:1}} /* Titik nota menyala sepanjang aksi. */
+@media(max-width:620px){body{padding:8px}.poster{border-radius:18px}.caption{top:14px;left:16px}.shot-note{right:10px;bottom:9px;padding:6px 9px}.scene{aspect-ratio:12/8.6}} /* Sesuaikan ruang dan bentuk poster untuk telefon. */
+@media(prefers-reduced-motion:reduce){.lamp-glow,.cue-rig,.shooting-arm,.cue-ball,.target-ball,.target-shadow,.cue-shadow,.observer-head,.observer-hand,.pocket-flash,.shot-note i{animation:none!important}.speech-bubble{animation:none!important;opacity:1!important;transform:none!important}} /* Matikan gerakan tetapi kekalkan dialog kelihatan jika pengguna memilih gerakan minimum. */
+</style> <!-- Tamat semua gaya dalaman. -->
+</head> <!-- Tamat bahagian kepala halaman. -->
+<body> <!-- Mula kandungan visual halaman. -->
+<main class="poster" aria-label="Animated flat vector illustration of two people at a snooker table"> <!-- Bingkai utama ilustrasi. -->
+  <div class="caption"> <!-- Kumpulan teks tajuk poster. -->
+    <p class="kicker">ONXON PRESENTS</p> <!-- Label kecil jenama. -->
+    <h1>The Perfect<br>Shot</h1> <!-- Tajuk utama ilustrasi. -->
+    <span>FOCUS · FORM · FINESSE</span> <!-- Slogan ilustrasi. -->
+  </div> <!-- Tamat tajuk poster. -->
+  <svg class="scene" viewBox="0 0 1200 760" role="img" aria-labelledby="sceneTitle sceneDesc" preserveAspectRatio="xMidYMid meet"> <!-- Kanvas SVG responsif. -->
+    <title id="sceneTitle">Two people playing snooker</title> <!-- Tajuk aksesibiliti ilustrasi. -->
+    <desc id="sceneDesc">One player bends over the table and takes a shot while another player stands beside the table watching.</desc> <!-- Penerangan aksesibiliti ilustrasi. -->
+    <defs> <!-- Mula definisi gradient, bayang dan klip. -->
+      <linearGradient id="wallGradient" x1="0" y1="0" x2="0" y2="1"> <!-- Gradient dinding kelab. -->
+        <stop offset="0" stop-color="#1d343a"/> <!-- Warna atas dinding. -->
+        <stop offset="1" stop-color="#0d1a1f"/> <!-- Warna bawah dinding. -->
+      </linearGradient> <!-- Tamat gradient dinding. -->
+      <linearGradient id="floorGradient" x1="0" y1="0" x2="1" y2="1"> <!-- Gradient lantai. -->
+        <stop offset="0" stop-color="#182226"/> <!-- Warna lantai kiri. -->
+        <stop offset="1" stop-color="#090f12"/> <!-- Warna lantai kanan. -->
+      </linearGradient> <!-- Tamat gradient lantai. -->
+      <linearGradient id="woodGradient" x1="0" y1="0" x2="1" y2="1"> <!-- Gradient bingkai kayu meja. -->
+        <stop offset="0" stop-color="#93603a"/> <!-- Sorotan kayu. -->
+        <stop offset=".45" stop-color="#6f3c22"/> <!-- Warna utama kayu. -->
+        <stop offset="1" stop-color="#392016"/> <!-- Bayang kayu. -->
+      </linearGradient> <!-- Tamat gradient kayu. -->
+      <linearGradient id="clothGradient" x1="0" y1="0" x2="1" y2="1"> <!-- Gradient kain meja. -->
+        <stop offset="0" stop-color="#0a9466"/> <!-- Kain hijau cerah. -->
+        <stop offset="1" stop-color="#056342"/> <!-- Kain hijau gelap. -->
+      </linearGradient> <!-- Tamat gradient kain meja. -->
+      <linearGradient id="shirtGradient" x1="0" y1="0" x2="1" y2="1"> <!-- Gradient baju pemain. -->
+        <stop offset="0" stop-color="#e5e1d7"/> <!-- Sorotan baju. -->
+        <stop offset="1" stop-color="#a9a69e"/> <!-- Bayang baju. -->
+      </linearGradient> <!-- Tamat gradient baju pemain. -->
+      <linearGradient id="observerShirt" x1="0" y1="0" x2="1" y2="1"> <!-- Gradient baju pemerhati. -->
+        <stop offset="0" stop-color="#d8aa50"/> <!-- Sorotan baju emas. -->
+        <stop offset="1" stop-color="#99621f"/> <!-- Bayang baju emas. -->
+      </linearGradient> <!-- Tamat gradient baju pemerhati. -->
+      <radialGradient id="lampLight"> <!-- Cahaya radial di atas meja. -->
+        <stop offset="0" stop-color="#fff7d2" stop-opacity=".52"/> <!-- Tengah cahaya. -->
+        <stop offset=".5" stop-color="#f4d47a" stop-opacity=".18"/> <!-- Cahaya pertengahan. -->
+        <stop offset="1" stop-color="#f4d47a" stop-opacity="0"/> <!-- Hujung cahaya lutsinar. -->
+      </radialGradient> <!-- Tamat cahaya radial. -->
+      <radialGradient id="ballWhite"> <!-- Gradient bola putih. -->
+        <stop offset="0" stop-color="#ffffff"/> <!-- Sorotan bola putih. -->
+        <stop offset=".7" stop-color="#eee9dc"/> <!-- Warna utama bola putih. -->
+        <stop offset="1" stop-color="#b5b0a5"/> <!-- Bayang bola putih. -->
+      </radialGradient> <!-- Tamat gradient bola putih. -->
+      <radialGradient id="ballRed"> <!-- Gradient bola merah. -->
+        <stop offset="0" stop-color="#ff6a5f"/> <!-- Sorotan bola merah. -->
+        <stop offset=".72" stop-color="#c5222d"/> <!-- Warna utama bola merah. -->
+        <stop offset="1" stop-color="#6d0e18"/> <!-- Bayang bola merah. -->
+      </radialGradient> <!-- Tamat gradient bola merah. -->
+      <filter id="softShadow" x="-30%" y="-30%" width="160%" height="180%"> <!-- Penapis bayang lembut. -->
+        <feDropShadow dx="0" dy="12" stdDeviation="13" flood-color="#000" flood-opacity=".45"/> <!-- Bentuk bayang meja dan manusia. -->
+      </filter> <!-- Tamat penapis bayang. -->
+      <clipPath id="clothClip"> <!-- Klip bola supaya kekal dalam kawasan kain. -->
+        <rect x="275" y="290" width="665" height="302" rx="24"/> <!-- Bentuk kawasan klip. -->
+      </clipPath> <!-- Tamat klip kain. -->
+    </defs> <!-- Tamat semua definisi SVG. -->
+
+    <rect width="1200" height="760" fill="url(#wallGradient)"/> <!-- Lukis dinding belakang. -->
+    <path d="M0 525 L1200 475 L1200 760 L0 760 Z" fill="url(#floorGradient)"/> <!-- Lukis lantai dalam perspektif. -->
+    <path d="M0 527 L1200 477" stroke="#8a6c4a" stroke-opacity=".18" stroke-width="3"/> <!-- Garis pemisah dinding dan lantai. -->
+    <path d="M180 510 L105 760 M410 500 L350 760 M655 490 L650 760 M895 482 L955 760" stroke="#ffffff" stroke-opacity=".035" stroke-width="2"/> <!-- Garis papan lantai perspektif. -->
+
+    <g opacity=".36"> <!-- Kumpulan hiasan bingkai dinding. -->
+      <rect x="86" y="128" width="205" height="122" rx="4" fill="#0a1418" stroke="#9f7c45" stroke-width="5"/> <!-- Bingkai poster kiri. -->
+      <path d="M118 217 Q185 132 255 217" fill="none" stroke="#e0bf72" stroke-width="4"/> <!-- Grafik lengkung dalam poster kiri. -->
+      <circle cx="186" cy="176" r="17" fill="#bc3340"/> <!-- Bola merah hiasan poster. -->
+      <rect x="968" y="115" width="146" height="170" rx="4" fill="#0a1418" stroke="#9f7c45" stroke-width="5"/> <!-- Bingkai poster kanan. -->
+      <path d="M998 242 L1082 148" stroke="#e0bf72" stroke-width="7" stroke-linecap="round"/> <!-- Kayu snooker hiasan poster. -->
+      <circle cx="1017" cy="219" r="16" fill="#e9e4d7"/> <!-- Bola putih hiasan poster. -->
+    </g> <!-- Tamat hiasan dinding. -->
+
+    <g class="lamp-glow"> <!-- Kumpulan lampu gantung dan cahaya. -->
+      <ellipse cx="624" cy="285" rx="365" ry="245" fill="url(#lampLight)"/> <!-- Kawasan cahaya lampu. -->
+      <path d="M474 0 V63 M774 0 V63" stroke="#080d0f" stroke-width="8"/> <!-- Dua kabel lampu. -->
+      <path d="M435 67 H813 L772 137 H476 Z" fill="#1e4d3b" stroke="#0a1713" stroke-width="7"/> <!-- Tudung lampu hijau. -->
+      <path d="M477 134 H771" stroke="#f5d986" stroke-width="7" stroke-linecap="round"/> <!-- Cahaya bawah tudung lampu. -->
+    </g> <!-- Tamat lampu gantung. -->
+
+    <ellipse cx="611" cy="670" rx="430" ry="53" fill="#000" opacity=".45"/> <!-- Bayang besar meja di lantai. -->
+
+    <g filter="url(#softShadow)"> <!-- Kumpulan keseluruhan meja snooker. -->
+      <path d="M236 257 Q236 230 268 230 H946 Q978 230 978 257 V600 Q978 625 949 625 H264 Q236 625 236 600 Z" fill="url(#woodGradient)" stroke="#2c1711" stroke-width="9"/> <!-- Bingkai kayu luar meja. -->
+      <rect x="261" y="271" width="692" height="329" rx="29" fill="#2f1a12"/> <!-- Lapisan kayu dalam. -->
+      <rect x="275" y="290" width="665" height="302" rx="24" fill="url(#clothGradient)" stroke="#0b3c2d" stroke-width="6"/> <!-- Permukaan kain hijau. -->
+      <path d="M298 572 H916" stroke="#25b081" stroke-opacity=".28" stroke-width="3"/> <!-- Sorotan halus kain meja. -->
+      <path d="M304 306 H912" stroke="#ffffff" stroke-opacity=".08" stroke-width="3"/> <!-- Sorotan atas kain meja. -->
+      <circle cx="283" cy="300" r="18" fill="#090d0d" stroke="#47291b" stroke-width="8"/> <!-- Lubang kiri atas. -->
+      <circle cx="607" cy="292" r="17" fill="#090d0d" stroke="#47291b" stroke-width="8"/> <!-- Lubang tengah atas. -->
+      <circle cx="932" cy="300" r="18" fill="#090d0d" stroke="#47291b" stroke-width="8"/> <!-- Lubang kanan atas. -->
+      <circle cx="283" cy="581" r="18" fill="#090d0d" stroke="#47291b" stroke-width="8"/> <!-- Lubang kiri bawah. -->
+      <circle cx="607" cy="591" r="17" fill="#090d0d" stroke="#47291b" stroke-width="8"/> <!-- Lubang tengah bawah. -->
+      <circle cx="932" cy="581" r="18" fill="#090d0d" stroke="#47291b" stroke-width="8"/> <!-- Lubang kanan bawah. -->
+      <path d="M275 290 L940 592" stroke="#ffffff" stroke-opacity=".025" stroke-width="22"/> <!-- Pantulan kain menyerong. -->
+      <path d="M341 625 L321 716 H366 L388 625 Z" fill="#4b2a1c"/> <!-- Kaki meja kiri. -->
+      <path d="M829 625 L847 716 H893 L875 625 Z" fill="#4b2a1c"/> <!-- Kaki meja kanan. -->
+      <path d="M321 716 H366" stroke="#21110d" stroke-width="13" stroke-linecap="round"/> <!-- Tapak kaki meja kiri. -->
+      <path d="M847 716 H893" stroke="#21110d" stroke-width="13" stroke-linecap="round"/> <!-- Tapak kaki meja kanan. -->
+    </g> <!-- Tamat meja snooker. -->
+
+    <g clip-path="url(#clothClip)"> <!-- Kumpulan bola yang diklip pada kain meja. -->
+      <ellipse class="cue-shadow" cx="574" cy="437" rx="15" ry="7" fill="#002d22" opacity=".34"/> <!-- Bayang bola putih. -->
+      <circle class="cue-ball" cx="570" cy="430" r="13" fill="url(#ballWhite)" stroke="#ffffff" stroke-opacity=".65" stroke-width="2"/> <!-- Bola putih bergerak. -->
+      <ellipse class="target-shadow" cx="764" cy="385" rx="15" ry="7" fill="#002d22" opacity=".34"/> <!-- Bayang bola merah sasaran. -->
+      <circle class="target-ball" cx="760" cy="378" r="13" fill="url(#ballRed)"/> <!-- Bola merah sasaran bergerak ke lubang. -->
+      <g> <!-- Kumpulan bola lain yang kekal di meja. -->
+        <circle cx="840" cy="505" r="12" fill="#c5222d"/> <!-- Bola merah satu. -->
+        <circle cx="870" cy="488" r="12" fill="#c5222d"/> <!-- Bola merah dua. -->
+        <circle cx="869" cy="522" r="12" fill="#c5222d"/> <!-- Bola merah tiga. -->
+        <circle cx="900" cy="470" r="12" fill="#c5222d"/> <!-- Bola merah empat. -->
+        <circle cx="901" cy="505" r="12" fill="#c5222d"/> <!-- Bola merah lima. -->
+        <circle cx="901" cy="539" r="12" fill="#c5222d"/> <!-- Bola merah enam. -->
+        <circle cx="716" cy="515" r="12" fill="#e7c51e"/> <!-- Bola kuning. -->
+        <circle cx="662" cy="339" r="12" fill="#1e82d4"/> <!-- Bola biru. -->
+        <circle cx="517" cy="514" r="12" fill="#2b292e"/> <!-- Bola hitam. -->
+        <circle cx="380" cy="363" r="12" fill="#5a3420"/> <!-- Bola coklat. -->
+      </g> <!-- Tamat bola lain. -->
+    </g> <!-- Tamat bola dalam kain. -->
+
+    <circle class="pocket-flash" cx="932" cy="300" r="22" fill="none" stroke="#ffd86a" stroke-width="5"/> <!-- Kilauan lubang ketika bola masuk. -->
+
+    <g class="speech-bubble" aria-label="paan and pakchan kalau gentle mai"> <!-- Gelembung dialog pemerhati yang muncul selepas bola masuk. -->
+      <path d="M804 42 H1016 Q1040 42 1040 66 V148 Q1040 172 1016 172 H1010 L1032 208 L986 172 H804 Q780 172 780 148 V66 Q780 42 804 42 Z" fill="#fffdf5" stroke="#17262b" stroke-width="6" stroke-linejoin="round"/> <!-- Bentuk awan dialog dengan ekor menunjuk ke arah kepala pemerhati. -->
+      <path d="M806 56 H1014" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity=".85"/> <!-- Sorotan putih halus pada bahagian atas gelembung. -->
+      <text x="910" y="92" fill="#17262b" font-size="24" font-weight="800" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif">paan &amp; pakchan</text> <!-- Baris pertama dialog. -->
+      <text x="910" y="132" fill="#b52d38" font-size="27" font-weight="900" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif">kalau gentle mai</text> <!-- Baris kedua dialog dengan warna merah untuk penegasan. -->
+    </g> <!-- Tamat gelembung dialog. -->
+
+    <g aria-label="Player taking the shot"> <!-- Pemain pertama sedang membongkok dan memukul bola. -->
+      <ellipse cx="205" cy="682" rx="94" ry="23" fill="#000" opacity=".42"/> <!-- Bayang pemain pertama di lantai. -->
+      <path d="M95 656 Q111 555 143 489 L199 500 Q176 571 169 668 Z" fill="#222a30"/> <!-- Kaki belakang pemain. -->
+      <path d="M174 668 Q185 569 218 505 L265 522 Q239 596 239 684 Z" fill="#171e24"/> <!-- Kaki hadapan pemain. -->
+      <path d="M84 681 H171 Q177 681 177 694 H88 Q78 693 84 681 Z" fill="#090d10"/> <!-- Kasut kiri pemain. -->
+      <path d="M154 688 H249 Q256 689 254 702 H164 Q151 700 154 688 Z" fill="#090d10"/> <!-- Kasut kanan pemain. -->
+      <path d="M132 405 Q195 369 304 401 L337 474 Q253 489 177 510 L124 469 Z" fill="url(#shirtGradient)" stroke="#77766f" stroke-width="3"/> <!-- Badan pemain membongkok ke meja. -->
+      <path d="M155 420 Q206 399 273 409" fill="none" stroke="#ffffff" stroke-opacity=".42" stroke-width="5"/> <!-- Lipatan cahaya pada baju. -->
+      <path d="M306 405 Q356 406 432 434 L420 460 Q339 452 294 440 Z" fill="#c88a66"/> <!-- Lengan hadapan pemain di atas meja. -->
+      <path d="M407 431 Q432 427 448 442 Q435 461 411 458 Z" fill="#d99b75"/> <!-- Tangan jambatan pemain. -->
+      <path class="shooting-arm" d="M173 427 Q239 431 314 459 L302 484 Q226 470 158 461 Z" fill="#bc7b59"/> <!-- Lengan pemukul pemain. -->
+      <circle cx="125" cy="389" r="45" fill="#cc8b66"/> <!-- Kepala pemain pertama. -->
+      <path d="M82 384 Q83 338 132 341 Q171 345 171 382 Q136 365 82 384 Z" fill="#1a1c1e"/> <!-- Rambut pemain pertama. -->
+      <path d="M93 401 Q119 423 149 404" fill="none" stroke="#9c6048" stroke-width="4" stroke-linecap="round"/> <!-- Garis rahang pemain. -->
+      <circle cx="149" cy="391" r="4" fill="#242221"/> <!-- Mata pemain memandang bola. -->
+      <path d="M137 410 Q149 415 159 407" fill="none" stroke="#7e473a" stroke-width="3" stroke-linecap="round"/> <!-- Mulut fokus pemain. -->
+      <g class="cue-rig"> <!-- Kayu snooker yang dianimasikan. -->
+        <path d="M91 483 L585 423" stroke="#e4c182" stroke-width="7" stroke-linecap="round"/> <!-- Batang kayu snooker utama. -->
+        <path d="M91 483 L226 467" stroke="#6b3b22" stroke-width="10" stroke-linecap="round"/> <!-- Bahagian belakang kayu yang gelap. -->
+        <path d="M579 424 L596 422" stroke="#e9f2e9" stroke-width="4" stroke-linecap="round"/> <!-- Hujung putih kayu snooker. -->
+      </g> <!-- Tamat kayu snooker. -->
+    </g> <!-- Tamat pemain pertama. -->
+
+    <g aria-label="Second player watching beside the table"> <!-- Pemain kedua berdiri dan memerhati. -->
+      <ellipse cx="1048" cy="703" rx="78" ry="20" fill="#000" opacity=".4"/> <!-- Bayang pemerhati di lantai. -->
+      <path d="M1012 514 L1001 686 H1042 L1054 535 Z" fill="#222a30"/> <!-- Kaki kiri pemerhati. -->
+      <path d="M1051 527 L1054 688 H1096 L1088 515 Z" fill="#171e24"/> <!-- Kaki kanan pemerhati. -->
+      <path d="M992 687 H1043 Q1048 692 1042 703 H990 Q982 699 992 687 Z" fill="#070b0d"/> <!-- Kasut kiri pemerhati. -->
+      <path d="M1048 689 H1102 Q1112 697 1103 706 H1053 Q1047 701 1048 689 Z" fill="#070b0d"/> <!-- Kasut kanan pemerhati. -->
+      <path d="M982 324 Q1038 288 1096 327 L1102 528 Q1042 554 976 522 Z" fill="url(#observerShirt)" stroke="#7d501b" stroke-width="4"/> <!-- Badan pemerhati. -->
+      <path d="M1003 342 Q1045 326 1082 343" fill="none" stroke="#ffe0a0" stroke-opacity=".48" stroke-width="5"/> <!-- Sorotan baju pemerhati. -->
+      <path d="M979 343 Q946 397 941 471" fill="none" stroke="#bf7d58" stroke-width="25" stroke-linecap="round"/> <!-- Lengan kiri pemerhati di tepi meja. -->
+      <path d="M940 464 Q936 480 949 489 Q966 479 964 463 Z" fill="#d4956c"/> <!-- Tangan kiri pemerhati. -->
+      <g class="observer-hand"> <!-- Kumpulan lengan kanan yang bereaksi. -->
+        <path d="M1094 347 Q1129 397 1135 458" fill="none" stroke="#bf7d58" stroke-width="25" stroke-linecap="round"/> <!-- Lengan kanan pemerhati. -->
+        <circle cx="1136" cy="465" r="15" fill="#d4956c"/> <!-- Tangan kanan pemerhati. -->
+      </g> <!-- Tamat lengan reaksi. -->
+      <g class="observer-head"> <!-- Kepala pemerhati yang mengekori bola. -->
+        <rect x="1019" y="286" width="45" height="52" rx="20" fill="#bd7958"/> <!-- Leher pemerhati. -->
+        <circle cx="1042" cy="260" r="48" fill="#cd8962"/> <!-- Kepala pemerhati. -->
+        <path d="M998 262 Q996 210 1043 206 Q1090 210 1087 255 Q1066 225 1000 243 Z" fill="#202326"/> <!-- Rambut pemerhati. -->
+        <path d="M1009 276 Q1041 300 1074 275" fill="none" stroke="#9a5b45" stroke-width="4" stroke-linecap="round"/> <!-- Rahang pemerhati. -->
+        <circle cx="1025" cy="264" r="4" fill="#242221"/> <!-- Mata kiri pemerhati. -->
+        <circle cx="1058" cy="262" r="4" fill="#242221"/> <!-- Mata kanan pemerhati. -->
+        <path d="M1032 283 Q1043 288 1054 280" fill="none" stroke="#7d4336" stroke-width="3" stroke-linecap="round"/> <!-- Senyuman pemerhati. -->
+      </g> <!-- Tamat kepala pemerhati. -->
+      <path d="M1116 550 L1161 302" stroke="#d9b775" stroke-width="7" stroke-linecap="round"/> <!-- Kayu snooker pemerhati yang bersandar. -->
+      <path d="M1159 310 L1164 283" stroke="#eef1e8" stroke-width="4" stroke-linecap="round"/> <!-- Hujung kayu snooker pemerhati. -->
+    </g> <!-- Tamat pemain kedua. -->
+
+    <g opacity=".82"> <!-- Hiasan skor kecil pada dinding. -->
+      <rect x="505" y="164" width="240" height="64" rx="12" fill="#071014" stroke="#d7a94b" stroke-width="2"/> <!-- Bingkai papan skor. -->
+      <text x="539" y="204" fill="#d7a94b" font-size="17" font-weight="700" letter-spacing="4">FRAME 07</text> <!-- Label frame. -->
+      <text x="694" y="206" fill="#f4e7c7" font-size="26" font-weight="800" text-anchor="middle">42</text> <!-- Nombor skor. -->
+    </g> <!-- Tamat papan skor. -->
+  </svg> <!-- Tamat kanvas SVG. -->
+  <div class="shot-note"><i></i><span>ANIMATED SHOT · REPLAYS AUTOMATICALLY</span></div> <!-- Nota bahawa animasi berulang. -->
+</main> <!-- Tamat bingkai ilustrasi. -->
+</body> <!-- Tamat kandungan halaman. -->
+</html> <!-- Tamat fail HTML. -->
